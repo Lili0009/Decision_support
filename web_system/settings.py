@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-u3ckdn3om^e)m(c&&mbz*(=kj@5ph+k_qs2a7s-senb)h&f*=a'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -49,6 +49,9 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -75,7 +78,7 @@ TEMPLATES = [
         },
     },
 ]
-# WSGI_APPLICATION = 'web_system.wsgi.application'
+WSGI_APPLICATION = 'web_system.wsgi.application'
 ASGI_APPLICATION = 'web_system.asgi.application'
 
 
@@ -88,6 +91,12 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
+
+
 
 
 # Password validation
@@ -134,17 +143,18 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'decision_support')]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
 
+ 
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6380)],
+            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6380')],
         },
     },
 }
 
 # CELERY SETTINGS
-CELERY_BROKER_URL = 'redis://127.0.0.1:6380'
+CELERY_BROKER_URL = os.environ['REDIS_URL']
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
