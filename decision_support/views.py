@@ -777,11 +777,11 @@ def Forecast(request):
 
         # sMAPE of actual data to forecasted data
         numerator = abs(df_forecast['Drawdown'].iloc[89] - original['Drawdown'].iloc[-1])
-        denominator = (abs(original['Drawdown'].iloc[-1]) + abs(df_forecast['Drawdown'].iloc[89]))
+        denominator = (abs(original['Drawdown'].iloc[-1]) + abs(df_forecast['Drawdown'].iloc[89])) / 2
         act_percentage_drawdown_error = numerator / denominator
 
         act_drawdown_smape = 100 * act_percentage_drawdown_error
-        act_drawdown_smape = 100 - act_drawdown_smape
+        #act_drawdown_smape = 100 - act_drawdown_smape
         act_drawdown_smape = round(act_drawdown_smape, 2)
         forecast_drawdown = df_forecast['Drawdown'].iloc[89]
         return fore_drawdown_smape, act_drawdown_smape, forecast_drawdown, actual_drawdown, html_str
