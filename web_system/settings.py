@@ -33,7 +33,6 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'daphne',
     'decision_support',
-    'django_celery_results',
     'django_celery_beat',
     'notifications_app',
     'channels',
