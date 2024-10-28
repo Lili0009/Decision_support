@@ -3,7 +3,6 @@ channels==4.1.0
 dj_database_url==2.3.0
 Django==5.0.8
 django_celery_beat==2.6.0
-django_celery_results==2.5.1
 keras==3.4.1
 numpy==2.1.2
 pandas==2.2.3
