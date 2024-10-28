@@ -8,6 +8,7 @@ django = "*"
 celery = "*"
 daphne = "*"
 django_celery_beat = "*"
+django_celery_results = "*"
 channels = "*"
 dj-database-url = "*"
 
