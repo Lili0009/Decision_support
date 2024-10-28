@@ -2,11 +2,7 @@ from tensorflow.keras.models import load_model
 from django.shortcuts import render
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.preprocessing import StandardScaler
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 import datetime
 import csv
 from datetime import datetime as dt_time
@@ -23,7 +19,7 @@ def waterlvl_prediction():
 
     model_water = load_model('Model_water.h5')
 
-    first_data = pd.read_csv('water_data.csv')
+    first_data = csv.DictReader('water_data.csv')
     first_data['Rainfall'] = pd.to_numeric(first_data['Rainfall'], errors='coerce')
 
     # training and testing sets
