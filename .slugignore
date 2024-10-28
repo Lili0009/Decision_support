@@ -3,7 +3,18 @@
 .pytest_cache/
 *.pdb
 .DS_Store
-tests/
-docs/
 .git/
 
+
+# Ignore test files and folders
+tests/
+
+# Ignore local environment files
+.env
+.venv/
+venv/
+*.local
+
+# Ignore docs and other unnecessary files
+docs/
+README.md
