@@ -144,22 +144,22 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
 
- 
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [os.environ.get('REDIS_URL', 'redis://default:hkiVFij4cwPwC8KMkYZeJxR4EA4opSET@redis-13735.c281.us-east-1-2.ec2.redns.redis-cloud.com:13735')],
+            "hosts": [
+                (os.environ.get('REDISCLOUD_URL', 'redis://localhost:6379')) 
+            ],
         },
     },
 }
 
 # CELERY SETTINGS
-CELERY_BROKER_URL = os.environ['REDIS_URL']
+CELERY_BROKER_URL = os.environ.get('REDISCLOUD_URL', 'redis://localhost:6379')
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TASK_SELERLIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'  # Fixed the typo
 CELERY_TIMEZONE = 'Asia/Manila'
-
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
