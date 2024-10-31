@@ -11,7 +11,7 @@ admin.site.index_title = 'Hydrocision Site'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', lambda request: redirect('admin/') if request.user.is_authenticated else redirect('admin/login/?next=/admin/')),
-    path('dashboard', views.Ab, name='dashboard'),
+    path('dashboard/', views.Ab, name='dashboard'),
     path('forecast/', views.Ac, name='forecast'),
     path('business_zone/', views.Ad, name='business_zone'),
     path('img_map/', views.Ae, name='img_map'),

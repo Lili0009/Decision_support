@@ -10,10 +10,6 @@ from datetime import datetime, date
 from django.shortcuts import redirect
 
 
-@admin.register_view('view-site', name='View Site')
-def view_site(request):
-    return redirect('dashboard')
-
 class CsvImportForm(forms.Form):
     csv_upload = forms.FileField()
 

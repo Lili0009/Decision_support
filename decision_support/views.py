@@ -70,6 +70,9 @@ import plotly.graph_objects as G,plotly.io as c
 from django.http import JsonResponse as w
 from django.templatetags.static import static
 from django.utils import timezone as AO
+from django.contrib.auth.decorators import login_required
+
+
 def AT():
 	global r,L,P,Q,r,AE,s;global x,m,AF,t,AZ,AU;x=AC('Model_water.h5');A=B.read_csv(AH);A[g]=B.to_numeric(A[g],errors=AI);D=d(e(A)*.8);G=A.iloc[:D];R=G[H].mean();S=G[O].mean();P=A.fillna(value={H:R,g:0,O:S}).copy();P[C]=B.to_datetime(P[C],format=U);P.set_index(C,inplace=E);m=AY(feature_range=(0,1));I=m.fit_transform(P)
 	def J(data,seq_length):
@@ -82,6 +85,8 @@ def AT():
 AT()
 Aa=AM.datetime.now()
 AG=Aa.strftime(AP)
+
+@login_required(login_url='/admin/login/')
 def Ab(request):
 	T='%B %d, %Y';d=r.iloc[7];g=L[H].iloc[-2];K=P.index[-1];m=K.replace(year=K.year-1);N=B.Timestamp(m);p=P.loc[N,H];q=N.strftime(T);O=P[H].min()
 	def s():L='%{y:.2f}';F=P[[H]];F=F.loc[(F.index>=F.index[-7])&(F.index<=F.index[-1])];N=F.index[-1];J=N+B.Timedelta(days=-6);O=J+B.Timedelta(days=7);K=B.date_range(start=J,end=O);R=Q.loc[K,H];S={Z:V,a:E};T=G.Scatter(x=F.index,y=F[H],mode=b,marker=A(color=z,size=5),line=A(width=1.5),name=A0,hovertemplate=L);U=G.Scatter(x=K,y=R,mode=b,marker=A(color=u,size=5),line=A(width=1.5),name=A1,hovertemplate=L);I=G.Figure();I.add_trace(T);I.add_trace(U);I.update_layout(xaxis=A(title=C,titlefont=A(size=14,color=D,family=X),tickformat=A2,tickangle=0,tickfont=A(size=11,color=D,family=X)),yaxis=A(title=AV,titlefont=A(size=15,color=D,family=X),tickfont=A(size=11,color=D,family=X)),margin=A(t=0,l=65,b=70,r=10),plot_bgcolor=M,paper_bgcolor=M,font=A(family=X,size=14,color=D),legend=A(orientation=Y,yanchor=n,y=1.08,xanchor=A3,x=.6),hovermode=A4,hoverlabel=A(bgcolor=A5,font=A(size=15,family=X,color=D)),width=550,height=450,modebar_remove=[h,i,j,k,AJ]);I.update_xaxes(showgrid=E,gridwidth=.5,gridcolor=AK,showspikes=E,spikecolor=D,spikethickness=.7,spikedash=A6);I.update_yaxes(showgrid=E,gridwidth=.5,gridcolor=AK);W=c.to_html(I,config=S);return W
@@ -101,6 +106,9 @@ def Ab(request):
 	x=AH;O,F=w(x);A7=AM.datetime.strptime(F,U).date();R=B.Timestamp(A7);AF=P.loc[R,H];F=R.strftime(T)
 	def A8():H=B.read_csv(AQ);H[C]=B.to_datetime(H[C],format=U);O=H[C].iloc[-1];L=B.to_datetime(O,format=U);P=L.month;Q=L.year;R=1;N=AN(year=Q,month=P,day=R);S=N.strftime('%Y');T=N.strftime('%B');X=f"{T} {S}";F=H.tail(6);F.set_index(W,inplace=E);F.sort_index(inplace=E);F[l]=F[I]-F[o];J=f(y(e(F)));K=G.Figure(data=[G.Bar(y=J,x=F[I],orientation=Y,name=I,base=0),G.Bar(y=J,x=-F[l],orientation=Y,name='NRWV',base=0)]);K.update_layout(barmode='stack',plot_bgcolor=M,paper_bgcolor=M,font=A(family='Arial, sans-serif',size=14,color=D),title=A(text=X,font=A(size=20,color=D),x=.48,xanchor=AR),xaxis=A(title=A(text=I,font=A(size=16,color=D)),tickfont=A(size=12,color=D)),yaxis=A(title=A(text=W,font=A(size=16,color=D)),tickfont=A(size=12,color=D)));K.update_yaxes(ticktext=F.index,tickvals=J);b={Z:V,a:E,'modeBarButtonsToRemove':[h,i,j,k]};c=K.to_html(config=b);d='\n            <style>\n            .modebar {\n                left: 0;  \n                top: 70px; \n            }\n            </style>\n            ';g=d+c;return g
 	A9=A8();AA=Q.index[13];AB=Q.index[14];AC=Q.index[15];return AD(request,'Dashboard.html',{'room_name':'broadcast','Tomorrow':d,'Today':AE,'Yesterday':g,'last_year_today':p,'date_last_year':q,'min_water_level':O,'min_water_level_date':F,C:AG,'date_today':AA,'date_yest':AB,'date_tom':AC,'plot':t,'water_alloc_plot':A9})
+
+
+@login_required(login_url='/admin/login/')
 def Ac(request):
 	Ab='forecast_drawdown';Aa='waterlvl_plot.html';A8='drawdown_plot.html';A7='rainfall_plot.html';o='rgba(255, 255, 255, 0.3)';P=request
 	def A9():
@@ -151,6 +159,8 @@ def Ac(request):
 	with J('rainfall_test_set.html',S,encoding=K)as I:An=I.read()
 	with J('drawdown_test_set.html',S,encoding=K)as I:Ao=I.read()
 	return AD(P,'Forecast.html',{C:AG,'actual':AE,'forecasted':AA,'forecasted_date':Ac,'fore_smape':AB,'act_smape':AJ,Ab:AO,'actual_drawdown':AP,'fore_drawdown_smape':AQ,'act_drawdown_smape':AR,'actual_rain':AM,'forecast_rain':AL,'fore_rain_smape':w,'act_rain_smape':AN,'water_plot':r,'rain_plot':W,'drawdown_interact_plot':l,'water_level_test_set':Am,'rainfall_test_set':An,'drawdown_test_set':Ao})
+
+@login_required(login_url='/admin/login/')
 def Ad(request):
 	AS='bar_chart.html';O=request;global N;H=B.read_csv(AQ);H[C]=B.to_datetime(H[C],format=U);AT=H[C].iloc[-1];AM=B.to_datetime(AT,format=U);AO=AM.month;AP=AM.year;P=1;AU=1
 	if O.method=='POST':AO=d(O.POST['month']);AP=d(O.POST['year']);P=d(O.POST['graph'])
@@ -177,6 +187,8 @@ def Ad(request):
 	b=N[I].sum();e=N[l].sum();Af=e/b*100;Ag=b-e
 	def L(location):A=N.loc[location];C=A[I];D=A[o];B=A[I]-A[o];E=A[I]-B;return C,D,B,E
 	f=0;g=0;m=0;r=0;f,g,m,r=L(A7);s=0;t=0;v=0;w=0;s,t,v,w=L(A8);x=0;y=0;z=0;A0=0;x,y,z,A0=L(A9);A1=0;A2=0;A3=0;A4=0;A1,A2,A3,A4=L(AA);A5=0;A6=0;AC=0;AE=0;A5,A6,AC,AE=L(AB);AF=0;AH=0;AI=0;AK=0;AF,AH,AI,AK=L(AL);Ah=f+s+x+A1+A5+AF;Ai=g+t+y+A2+A6+AH;Aj=m+v+z+A3+AC+AI;Ak=r+w+A0+A4+AE+AK;return AD(O,'Business-zones.html',{C:AG,'supply':b,'total_supply':Ag,'total_nrwv':e,AW:Af,'display_date':X,'month_date':AZ,'chart':R,'araneta_sv':f,'araneta_bill':g,'araneta_nrwv':m,'araneta_ws':r,'elli_sv':s,'elli_bill':t,'elli_nrwv':v,'elli_ws':w,'sj_sv':x,'sj_bill':y,'sj_nrwv':z,'sj_ws':A0,'ts_sv':A1,'ts_bill':A2,'ts_nrwv':A3,'ts_ws':A4,'timog_sv':A5,'timog_bill':A6,'timog_nrwv':AC,'timog_ws':AE,'up_sv':AF,'up_bill':AH,'up_nrwv':AI,'up_ws':AK,'supply_volume':Ah,'bill_volume':Ai,'nrw_volume':Aj,AX:Ak})
+
+@login_required(login_url='/admin/login/')
 def Ae(request):
 	K='error';G=request
 	if G.headers.get('X-Requested-With')=='XMLHttpRequest':
