@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-u3ckdn3om^e)m(c&&mbz*(=kj@5ph+k_qs2a7s-senb)h&f*=a
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['decision-support.onrender.com', '127.0.0.1']
+ALLOWED_HOSTS = ['decision-support.onrender.com', 'localhost', '127.0.0.1']
 
 
 
@@ -64,7 +64,7 @@ ROOT_URLCONF = 'web_system.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
